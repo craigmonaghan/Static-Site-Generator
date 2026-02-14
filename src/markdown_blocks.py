@@ -1,4 +1,7 @@
 from enum import Enum
+from htmlnode import HTMLNode, ParentNode
+from textnode import text_node_to_html_node
+from inline_markdown import text_to_textnodes
 
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
@@ -53,3 +56,28 @@ def block_to_block_type(markdown):
         return BlockType.ORDERED_LIST
 
     return BlockType.PARAGRAPH
+
+
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown)
+    children = []
+    for block in blocks:
+        block_type = block_to_block_type(block)
+        if block_type == BlockType.PARAGRAPH:
+            text = " ".join(block.split("\n"))
+            p_children = text_to_children(text)
+            block_node = ParentNode("p", p_children)
+            children.append(block_node)
+    return ParentNode("div", children)
+
+
+
+
+def text_to_children(text):
+    text_nodes = text_to_textnodes(text)
+    children = []
+    for tn in text_nodes:
+        children.append(text_node_to_html_node(tn))
+    return children
+
+markdown_to_html_node("> poo")
