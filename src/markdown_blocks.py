@@ -122,17 +122,9 @@ def markdown_to_html_node(markdown):
     return ParentNode("div", children)
 
 
-
-
 def text_to_children(text):
     text_nodes = text_to_textnodes(text)
     children = []
     for tn in text_nodes:
         children.append(text_node_to_html_node(tn))
     return children
-
-
-
-
-
-
