@@ -5,4 +5,3 @@ def extract_title(markdown):
                 return line[2:].strip()
         raise Exception("Markdown must contain an H1 header")
 
-print(extract_title("# Hello this is a test"))
