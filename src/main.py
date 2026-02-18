@@ -1,5 +1,5 @@
 import os, shutil
-
+from gen_content import generate_page
 
 def main():
     if os.path.exists("./public"):
@@ -7,6 +7,7 @@ def main():
         print(f"cleared directory ")
     os.mkdir("./public")
     copy_files_recursive("./static", "./public")
+    generate_page("content/index.md", "template.html", "public/index.html")
 
     
 def copy_files_recursive(source, destination):

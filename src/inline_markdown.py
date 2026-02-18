@@ -48,8 +48,8 @@ def split_nodes_image(old_nodes):
                     parts = current_text_to_split.split(full_image_markdown, maxsplit=1)
                     if parts[0] != "":
                         new_nodes.append(TextNode(parts[0], TextType.TEXT))
-                        new_nodes.append(TextNode(alt_text, TextType.IMAGE, url))
-                        current_text_to_split = parts[1]
+                    new_nodes.append(TextNode(alt_text, TextType.IMAGE, url))
+                    current_text_to_split = parts[1]
                 if current_text_to_split != "":
                     new_nodes.append(TextNode(current_text_to_split, TextType.TEXT))
     return new_nodes
@@ -71,8 +71,8 @@ def split_nodes_link(old_nodes):
                     parts = current_text_to_split.split(full_image_markdown, maxsplit=1)
                     if parts[0] != "":
                         new_nodes.append(TextNode(parts[0], TextType.TEXT))
-                        new_nodes.append(TextNode(link_text, TextType.LINK, url))
-                        current_text_to_split = parts[1]
+                    new_nodes.append(TextNode(link_text, TextType.LINK, url))
+                    current_text_to_split = parts[1]
                 if current_text_to_split != "":
                     new_nodes.append(TextNode(current_text_to_split, TextType.TEXT))
     return new_nodes
