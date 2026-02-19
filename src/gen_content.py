@@ -26,5 +26,16 @@ def generate_page(from_path, template_path, dest_path):
     os.makedirs(os.path.dirname(dest_path), exist_ok=True) 
     with open(dest_path, "w") as file:
          file.write(html_template)
-    
-    print(f"{htmlstring}")
+
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+     for i in os.listdir(dir_path_content):
+          dir_path = os.path.join(dir_path_content, i)
+          d_dir_path = os.path.join(dest_dir_path, i)
+          if os.path.isfile(dir_path):
+               md_to_html = i.replace(".md", ".html")
+               d_dir_path = os.path.join(dest_dir_path, md_to_html)
+               print(f"dir_path: {dir_path}, d_dir_path: {d_dir_path}")
+               generate_page(dir_path, template_path, d_dir_path)
+          elif os.path.isdir(dir_path):
+               generate_pages_recursive(dir_path, template_path, d_dir_path)

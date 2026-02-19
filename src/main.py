@@ -1,13 +1,12 @@
 import os, shutil
-from gen_content import generate_page
-
+from gen_content import generate_pages_recursive
 def main():
     if os.path.exists("./public"):
         shutil.rmtree("./public")
-        print(f"cleared directory ")
+        print("cleared directory ")
     os.mkdir("./public")
     copy_files_recursive("./static", "./public")
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
 
     
 def copy_files_recursive(source, destination):
@@ -16,9 +15,9 @@ def copy_files_recursive(source, destination):
         dest_path = os.path.join(destination, item)
         if os.path.isdir(source_path):
             os.mkdir(dest_path)
-            print(f"Directory created")
+            print("Directory created")
             copy_files_recursive(source_path, dest_path)
-            print(f"Recursion is happening")
+            print("Recursion is happening")
         else:
             print(f"Files created {dest_path}")
             shutil.copy(source_path, dest_path)
