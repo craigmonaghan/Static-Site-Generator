@@ -1,12 +1,18 @@
-import os, shutil
+import os, shutil, sys
 from gen_content import generate_pages_recursive
+
+
 def main():
-    if os.path.exists("./public"):
-        shutil.rmtree("./public")
+    basepath = "/"
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+
+    if os.path.exists("./docs"):
+        shutil.rmtree("./docs")
         print("cleared directory ")
-    os.mkdir("./public")
-    copy_files_recursive("./static", "./public")
-    generate_pages_recursive("content", "template.html", "public")
+    os.mkdir("./docs")
+    copy_files_recursive("./static", "./docs")
+    generate_pages_recursive("content", "template.html", "./docs", basepath)
 
     
 def copy_files_recursive(source, destination):

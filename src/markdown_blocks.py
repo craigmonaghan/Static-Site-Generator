@@ -3,6 +3,7 @@ from htmlnode import HTMLNode, ParentNode
 from textnode import text_node_to_html_node, TextNode, TextType
 from inline_markdown import text_to_textnodes
 
+
 class BlockType(Enum):
     PARAGRAPH = "paragraph"
     HEADING = "heading"
@@ -10,6 +11,7 @@ class BlockType(Enum):
     QUOTE = "quote"
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
+
 
 def markdown_to_blocks(markdown: str) -> list[str]:
     starting_blocks = markdown.split("\n\n")
@@ -24,14 +26,11 @@ def markdown_to_blocks(markdown: str) -> list[str]:
 def block_to_block_type(markdown):
     lines = markdown.split("\n")
 
-    
     if markdown.startswith(("# ", "## ", "### ", "#### ", "##### ", "###### ")):
         return BlockType.HEADING
     
-    
     if markdown.startswith("```\n") and markdown.endswith("```"):
         return BlockType.CODE
-    
     
     if markdown.startswith(">"):
         for line in lines:
@@ -39,13 +38,11 @@ def block_to_block_type(markdown):
                 return BlockType.PARAGRAPH
         return BlockType.QUOTE
     
-    
     if markdown.startswith("- "):
         for line in lines:
             if not line.startswith("- "):
                 return BlockType.PARAGRAPH
         return BlockType.UNORDERED_LIST
-    
     
     if markdown.startswith("1. "):
         count = 1
@@ -54,7 +51,6 @@ def block_to_block_type(markdown):
                 return BlockType.PARAGRAPH
             count += 1
         return BlockType.ORDERED_LIST
-
     return BlockType.PARAGRAPH
 
 
@@ -69,13 +65,11 @@ def markdown_to_html_node(markdown):
             block_node = ParentNode("p", p_children)
             children.append(block_node)
         
-        
         elif block_type == BlockType.CODE:
             raw = block[4:-3]
             block_node = ParentNode("pre", [ParentNode("code", [text_node_to_html_node(TextNode(raw, TextType.TEXT))])])
             children.append(block_node)
-        
-
+    
         elif block_type == BlockType.HEADING:
             level = 0
             for char in block:
@@ -87,7 +81,6 @@ def markdown_to_html_node(markdown):
             h_children = text_to_children(text)
             block_node = ParentNode(f"h{level}", h_children)
             children.append(block_node)
-
         
         elif block_type == BlockType.QUOTE:
             lines = block.split("\n")
@@ -98,7 +91,6 @@ def markdown_to_html_node(markdown):
             q_children = text_to_children(text)
             children.append(ParentNode("blockquote", q_children))
 
-
         elif block_type == BlockType.UNORDERED_LIST:
             items = []
             for line in block.split("\n"):
@@ -106,7 +98,6 @@ def markdown_to_html_node(markdown):
                 li_children = text_to_children(item_text)
                 items.append(ParentNode("li", li_children))
             children.append(ParentNode("ul", items))
-        
 
         elif block_type == BlockType.ORDERED_LIST:
             items = []
@@ -115,7 +106,6 @@ def markdown_to_html_node(markdown):
                 li_children = text_to_children(item_text)
                 items.append(ParentNode("li", li_children))
             children.append(ParentNode("ol", items))
-
 
         else:
             raise ValueError(f"unhandled block type:: {block_type}")
